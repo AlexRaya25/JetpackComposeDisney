@@ -94,7 +94,7 @@ fun CharacterDetails(characterData: CharacterEntity) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(Color.LightGray)
+            .background(Color.White)
     ) {
         Column {
             Image(
