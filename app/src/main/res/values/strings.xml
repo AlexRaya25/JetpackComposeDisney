@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">JetpackComposeDisney</string>
+
+    <string name="back">Back</string>
+    <string name="search">search</string>
+    <string name="history">History</string>
+
+    <!--SearchScreen-->
+    <string name="search_empty">Search cannot be empty.</string>
+    <string name="confirm_deletion">Confirm Deletion</string>
+    <string name="delete_search_history">Are you sure you want to delete this item from the search history?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!--SearchResultScreen-->
+    <string name="no_character_found">No characters found.</string>
+
+    <!--DetailScreen-->
+    <string name="park_attractions">Park Attractions</string>
+    <string name="video_games">Video Games</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="films">Films</string>
+    <string name="no_character_detail_found">No character details available.</string>
+</resources>
