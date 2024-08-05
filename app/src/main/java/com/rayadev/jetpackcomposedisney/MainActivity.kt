@@ -5,13 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.room.Room
-import com.rayadev.jetpackcomposedisney.data.local.AppDatabase
+import com.rayadev.data.database.AppDatabase
 import com.rayadev.jetpackcomposedisney.presentation.navigation.Navigation
-import com.rayadev.jetpackcomposedisney.utils.Constants.DATABASE_NAME
+import com.rayadev.domain.constants.Constants.DATABASE_NAME
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(){

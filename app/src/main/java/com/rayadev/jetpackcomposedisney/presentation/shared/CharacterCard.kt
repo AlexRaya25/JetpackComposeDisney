@@ -1,13 +1,7 @@
 package com.rayadev.jetpackcomposedisney.presentation.shared
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,20 +14,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.rayadev.jetpackcomposedisney.data.local.CharacterEntity
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.Black
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.White
+import com.rayadev.domain.models.Character
 
 @Composable
 fun CharacterCard(
-    data: CharacterEntity,
+    character: Character,
     onNavigate: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onNavigate(data.id) }
+            .clickable { onNavigate(character.id) }
             .height(120.dp),
         shape = MaterialTheme.shapes.medium,
         color = White,
@@ -46,12 +40,12 @@ fun CharacterCard(
             contentAlignment = Alignment.CenterStart
         ) {
             AsyncImage(
-                model = data.imageUrl,
+                model = character.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(110.dp)
                     .align(Alignment.CenterStart)
-                    .clip(RoundedCornerShape(topStart = 8.dp , bottomStart = 8.dp)),
+                    .clip(RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)),
                 contentScale = ContentScale.Crop,
             )
             Column(
@@ -59,31 +53,28 @@ fun CharacterCard(
                     .fillMaxWidth()
                     .padding(start = 120.dp, top = 8.dp, bottom = 8.dp)
             ) {
-                data.name.let {
-                    Text(
-                        text = it,
-                        color = Black,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                }
+                Text(
+                    text = character.name,
+                    color = Black,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             }
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun PlayerCardPreview() {
-    val sampleData = CharacterEntity(
+fun CharacterCardPreview() {
+    val sampleData = Character(
         id = 1,
-        name = "Sample Player",
+        name = "Sample Character",
         imageUrl = "https://via.placeholder.com/150",
         films = listOf("Sample Film 1", "Sample Film 2"),
         tvShows = listOf("Sample TV Show 1", "Sample TV Show 2"),
         videoGames = listOf("Sample Game 1", "Sample Game 2"),
         parkAttractions = listOf("Sample Park 1", "Sample Park 2")
     )
-    CharacterCard(data = sampleData, onNavigate = {})
+    CharacterCard(character = sampleData, onNavigate = {})
 }

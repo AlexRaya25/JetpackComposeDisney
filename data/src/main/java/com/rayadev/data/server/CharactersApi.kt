@@ -1,7 +1,7 @@
-package com.rayadev.jetpackcomposedisney.data.remote
+package com.rayadev.data.server
 
-import com.rayadev.jetpackcomposedisney.domain.model.CharacterDetailResponse
-import com.rayadev.jetpackcomposedisney.domain.model.CharacterResponse
+import com.rayadev.domain.models.CharacterDetailResponse
+import com.rayadev.domain.models.CharacterResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -9,7 +9,6 @@ import retrofit2.http.Query
 interface CharactersApi {
     @GET("character")
     suspend fun getCharacters(
-        @Query("page") page: Int
     ): CharacterResponse
 
     @GET("character")

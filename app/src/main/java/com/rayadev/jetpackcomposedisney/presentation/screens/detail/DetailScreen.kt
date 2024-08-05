@@ -9,11 +9,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,30 +25,50 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.rayadev.jetpackcomposedisney.R
-import com.rayadev.jetpackcomposedisney.data.local.CharacterEntity
+import com.rayadev.data.database.CharacterEntity
+import com.rayadev.domain.models.CharacterDetailResponse
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.Black
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.DarkGray
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.LightGray
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 fun DetailScreen(
     id: Int,
     onUpClick: () -> Unit,
-    viewModel: DetailViewModel = hiltViewModel()
+    viewModel: DetailViewModel = hiltViewModel(),
 ) {
-    val characterState = viewModel.characterDetails.collectAsState()
-    val isLoadingState = viewModel.isLoading.collectAsState()
+    val characterState by viewModel.characterDetails.collectAsState()
+    val isLoadingState by viewModel.isLoading.collectAsState()
+
+    LaunchedEffect(id) {
+        viewModel.loadCharacterDetails(id)
+    }
+
+    DetailScreenContent(
+        onUpClick,
+        characterState,
+        isLoadingState
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+fun DetailScreenContent(
+    onUpClick: () -> Unit,
+    characterData: CharacterEntity?,
+    loading: Boolean
+) {
 
     Scaffold(
         topBar = {
             TopAppBar(
                 navigationIcon = {
                     IconButton(onClick = onUpClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 title = { Text(text = "") },
@@ -58,18 +79,11 @@ fun DetailScreen(
             )
         },
         content = {
-            LaunchedEffect(id) {
-                viewModel.loadCharacterDetails(id)
-            }
-
-            val character = characterState.value
-            val isLoading = isLoadingState.value
-
-            if (isLoading) {
+            if (loading) {
                 LoadingContent()
             } else {
-                character?.let { characterData ->
-                    CharacterDetails(characterData = characterData)
+                characterData?.let { data ->
+                    CharacterDetails(characterData = data)
                 } ?: run {
                     NoCharacterDetails()
                 }
@@ -77,6 +91,8 @@ fun DetailScreen(
         }
     )
 }
+
+
 
 @Composable
 fun LoadingContent() {
@@ -98,7 +114,7 @@ fun CharacterDetails(characterData: CharacterEntity) {
     ) {
         Column {
             Image(
-                painter = rememberImagePainter(characterData.imageUrl),
+                painter = rememberAsyncImagePainter(characterData.imageUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .height(300.dp)
@@ -121,6 +137,7 @@ fun CharacterDetails(characterData: CharacterEntity) {
         }
     }
 }
+
 
 @Composable
 fun CharacterDetailList(title: String, items: List<String>) {
@@ -154,7 +171,6 @@ fun CharacterDetailList(title: String, items: List<String>) {
     }
 }
 
-
 @Composable
 fun NoCharacterDetails() {
     Box(
@@ -170,7 +186,7 @@ fun HorizontalDivider(
     padding: PaddingValues = PaddingValues(horizontal = 20.dp),
     background: Color = LightGray,
     height: Dp = 2.dp) {
-    Divider(
+    HorizontalDivider(
         modifier = Modifier
             .fillMaxWidth()
             .padding(padding)

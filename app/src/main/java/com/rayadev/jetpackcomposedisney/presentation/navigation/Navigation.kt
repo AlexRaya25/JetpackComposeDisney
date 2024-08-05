@@ -15,10 +15,10 @@ import com.rayadev.jetpackcomposedisney.presentation.screens.detail.DetailScreen
 import com.rayadev.jetpackcomposedisney.presentation.screens.main.MainScreen
 import com.rayadev.jetpackcomposedisney.presentation.screens.search.SearchScreen
 import com.rayadev.jetpackcomposedisney.presentation.screens.searchResult.SearchResultScreen
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_DETAIL
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_MAIN
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_SEARCH
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_SEARCH_RESULT
+import com.rayadev.domain.constants.Constants.DESTINATION_DETAIL
+import com.rayadev.domain.constants.Constants.DESTINATION_MAIN
+import com.rayadev.domain.constants.Constants.DESTINATION_SEARCH
+import com.rayadev.domain.constants.Constants.DESTINATION_SEARCH_RESULT
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
@@ -45,7 +45,7 @@ private fun NavGraphBuilder.addPlayersScreen(navController: NavController) {
 
 private fun NavGraphBuilder.addDetailScreen(navController: NavController) {
     composable(
-        route = DESTINATION_DETAIL + "/{id}",
+        route = "$DESTINATION_DETAIL/{id}",
         arguments = listOf(navArgument("id") { type = NavType.IntType })
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
@@ -64,7 +64,7 @@ private fun NavGraphBuilder.addSearchScreen(navController: NavController) {
         val coroutineScope = rememberCoroutineScope()
         val navigateToSearchResults: (String) -> Unit = { query ->
             coroutineScope.launch {
-                navController.navigate(DESTINATION_SEARCH_RESULT + "/$query")
+                navController.navigate("$DESTINATION_SEARCH_RESULT/$query")
             }
         }
         SearchScreen(navController = navController, onSearchSubmitted = navigateToSearchResults)
@@ -73,7 +73,7 @@ private fun NavGraphBuilder.addSearchScreen(navController: NavController) {
 
 private fun NavGraphBuilder.addSearchResultScreen(navController: NavController) {
     composable(
-        route = DESTINATION_SEARCH_RESULT + "/{query}",
+        route = "$DESTINATION_SEARCH_RESULT/{query}",
         arguments = listOf(navArgument("query") { type = NavType.StringType })
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)

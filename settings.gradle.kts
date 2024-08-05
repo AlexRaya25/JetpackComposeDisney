@@ -20,5 +20,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "JetpackComposeDisney"
-include(":app")
- 
+include(":app", ":data", ":domain", ":usecase")

@@ -32,11 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -52,6 +52,10 @@ android {
 }
 
 dependencies {
+    implementation (project(":domain"))
+    implementation (project(":data"))
+    implementation (project(":usecase"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -95,9 +99,9 @@ dependencies {
 
     // Dagger Hilt for testing
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestAnnotationProcessor(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
     testImplementation(libs.hilt.android.testing)
-    testAnnotationProcessor(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 
     // Room Database
     implementation(libs.androidx.room.runtime)

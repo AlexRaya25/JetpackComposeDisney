@@ -1,4 +1,4 @@
-package com.rayadev.jetpackcomposedisney.utils
+package com.rayadev.domain.constants
 
 object Constants {
     const val BASE_URL = "https://api.disneyapi.dev/"

@@ -1,6 +1,5 @@
 package com.rayadev.jetpackcomposedisney.presentation.screens.search
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,7 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,14 +21,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.rayadev.jetpackcomposedisney.R
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.LightGray
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.Red
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.White
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_MAIN
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_SEARCH_RESULT
+import com.rayadev.domain.constants.Constants.DESTINATION_MAIN
+import com.rayadev.domain.constants.Constants.DESTINATION_SEARCH_RESULT
 import com.rayadev.jetpackcomposedisney.utils.SearchHistoryManager
 
 @Composable
@@ -210,15 +208,16 @@ fun TopAppBarSearch(
                         .fillMaxWidth()
                         .focusRequester(focusRequester),
                     textStyle = MaterialTheme.typography.bodyMedium,
-                    colors = TextFieldDefaults.textFieldColors(
-                        cursorColor = MaterialTheme.colorScheme.onSurface,
-                        containerColor = Color.Transparent
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
                     )
                 )
             },
             navigationIcon = {
                 IconButton(onClick = onBackClicked) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                 }
             },
             actions = {
@@ -228,19 +227,4 @@ fun TopAppBarSearch(
             }
         )
     }
-}
-
-@SuppressLint("UnrememberedMutableState")
-@Preview
-@Composable
-fun PreviewTopAppBarSearch() {
-    val searchTextState by remember { mutableStateOf("") }
-    val focusRequester = FocusRequester()
-
-    TopAppBarSearch(
-        searchTextState = mutableStateOf(searchTextState),
-        onSearchClicked = {},
-        onBackClicked = {},
-        focusRequester = focusRequester
-    )
 }

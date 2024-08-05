@@ -20,13 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.rayadev.jetpackcomposedisney.R
-import com.rayadev.jetpackcomposedisney.data.local.CharacterEntity
 import com.rayadev.jetpackcomposedisney.presentation.shared.CharacterCard
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.LightGray
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.White
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_DETAIL
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_SEARCH
-
+import com.rayadev.domain.constants.Constants.DESTINATION_DETAIL
+import com.rayadev.domain.constants.Constants.DESTINATION_SEARCH
+import com.rayadev.domain.models.Character
 
 @Composable
 fun MainScreen(
@@ -51,45 +50,36 @@ fun MainScreen(
             ) {
                 when {
                     isLoading -> LoadingIndicator()
-                    state.isEmpty() -> NoCharactersFound()
-                    else -> CharactersList(state, scrollState, navController)
+                    state.isNotEmpty() -> CharacterList(
+                        characters = state,
+                        navController = navController,
+                        scrollState = scrollState
+                    )
+                    else -> NoDataMessage()
                 }
             }
         }
     )
 }
 
-@Composable
-fun LoadingIndicator() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun NoCharactersFound() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(stringResource(R.string.no_character_found))
-    }
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CharactersList(
-    characters: List<CharacterEntity>,
-    scrollState: LazyListState,
-    navController: NavController
+fun CharacterList(
+    characters: List<Character>,
+    navController: NavController,
+    scrollState: LazyListState
 ) {
-    val groupedCharacters = characters.groupBy { it.name.first().uppercaseChar() }
-
     LazyColumn(state = scrollState) {
+        val groupedCharacters = characters.groupBy { it.name.first().uppercaseChar() }
+
         groupedCharacters.forEach { (initial, characters) ->
             stickyHeader { SectionHeader(initial) }
             items(characters) { character ->
                 CharacterCard(
-                    data = character,
-                    onNavigate = { navController.navigate("$DESTINATION_DETAIL/${character.id}") },
-                    modifier = Modifier.padding(8.dp)
+                    character = character,
+                    onNavigate = {
+                        navController.navigate("$DESTINATION_DETAIL/${character.id}")
+                    }
                 )
             }
         }
@@ -111,17 +101,41 @@ fun SectionHeader(initial: Char) {
     }
 }
 
+@Composable
+fun LoadingIndicator() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(color = LightGray)
+    }
+}
+
+@Composable
+fun NoDataMessage() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.no_character_found),
+            fontWeight = FontWeight.Bold,
+            color = Color.Gray
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBarWithSearch(navController: NavController) {
-    Surface(color = LightGray) {
-        TopAppBar(
-            title = { Text(text = stringResource(id = R.string.app_name)) },
-            actions = {
-                IconButton(onClick = { navController.navigate(DESTINATION_SEARCH) }) {
-                    Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
-                }
+    TopAppBar(
+        title = { Text(text = stringResource(R.string.app_name)) },
+        actions = {
+            IconButton(
+                onClick = { navController.navigate(DESTINATION_SEARCH) }
+            ) {
+                Icon(Icons.Rounded.Search, contentDescription = null, tint = LightGray)
             }
-        )
-    }
+        }
+    )
 }

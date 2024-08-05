@@ -1,4 +1,4 @@
-package com.rayadev.jetpackcomposedisney.data.local
+package com.rayadev.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

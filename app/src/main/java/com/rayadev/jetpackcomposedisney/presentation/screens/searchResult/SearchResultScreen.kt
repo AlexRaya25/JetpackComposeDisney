@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,8 +21,8 @@ import com.rayadev.jetpackcomposedisney.R
 import com.rayadev.jetpackcomposedisney.presentation.screens.main.CharactersViewModel
 import com.rayadev.jetpackcomposedisney.presentation.shared.CharacterCard
 import com.rayadev.jetpackcomposedisney.presentation.ui.theme.LightGray
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_DETAIL
-import com.rayadev.jetpackcomposedisney.utils.Constants.DESTINATION_SEARCH
+import com.rayadev.domain.constants.Constants.DESTINATION_DETAIL
+import com.rayadev.domain.constants.Constants.DESTINATION_SEARCH
 
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +52,7 @@ fun SearchResultScreen(
                 navigationIcon = {
                     IconButton(onClick = { navController.navigate(DESTINATION_SEARCH) }) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
                         )
                     }
@@ -74,12 +74,12 @@ fun SearchResultScreen(
                         modifier = Modifier
                             .padding(padding)
                             .background(LightGray),
-                        columns = GridCells.Fixed(1)
+                        columns = GridCells.Fixed(2)
                     ) {
-                        items(state) { data ->
+                        items(state) { character ->
                             CharacterCard(
-                                data = data,
-                                onNavigate = {  navController.navigate(DESTINATION_DETAIL + "/${data.id}") },
+                                character = character,
+                                onNavigate = { navController.navigate("$DESTINATION_DETAIL/${character.id}") },
                                 modifier = Modifier.padding(8.dp)
                             )
                         }

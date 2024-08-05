@@ -1,4 +1,4 @@
-package com.rayadev.jetpackcomposedisney.data.local
+package com.rayadev.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -16,5 +16,5 @@ interface CharacterDao {
     fun getAllCharacters(): Flow<List<CharacterEntity>>
 
     @Query("SELECT * FROM characters WHERE id = :id")
-    fun getCharacterById(id: Int): Flow<CharacterEntity>
+    fun getCharacterById(id: Int): Flow<CharacterEntity?>
 }
