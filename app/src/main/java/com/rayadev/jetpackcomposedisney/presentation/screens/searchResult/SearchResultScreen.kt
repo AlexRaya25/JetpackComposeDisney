@@ -74,7 +74,7 @@ fun SearchResultScreen(
                         modifier = Modifier
                             .padding(padding)
                             .background(LightGray),
-                        columns = GridCells.Fixed(2)
+                        columns = GridCells.Fixed(1)
                     ) {
                         items(state) { character ->
                             CharacterCard(

@@ -33,7 +33,8 @@ class CharactersViewModel @Inject constructor(
             try {
                 Log.d(TAG, "fetchCharacters: Loading characters from API...")
                 val response = getCharactersUseCase()
-                _state.value = response.characters
+                Log.d(TAG, "fetchCharacters: Characters loaded from API - ${response.characters}")
+                _state.value = response.characters ?: emptyList()
                 Log.d(TAG, "fetchCharacters: Characters loaded from API.")
             } catch (e: Exception) {
                 Log.e(TAG, "fetchCharacters: Error fetching characters", e)
@@ -50,7 +51,7 @@ class CharactersViewModel @Inject constructor(
             try {
                 Log.d(TAG, "searchCharacters: Searching characters by name...")
                 val response = getCharactersByNameUseCase(query)
-                _state.value = response.characters
+                _state.value = response.characters ?: emptyList()
                 Log.d(TAG, "searchCharacters: Characters found for query '$query'.")
             } catch (e: Exception) {
                 Log.e(TAG, "searchCharacters: Error searching characters", e)

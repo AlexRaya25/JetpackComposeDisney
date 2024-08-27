@@ -1,5 +1,6 @@
 package com.rayadev.jetpackcomposedisney.presentation.screens.main
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,6 +27,7 @@ import com.rayadev.jetpackcomposedisney.presentation.ui.theme.White
 import com.rayadev.domain.constants.Constants.DESTINATION_DETAIL
 import com.rayadev.domain.constants.Constants.DESTINATION_SEARCH
 import com.rayadev.domain.models.Character
+import com.rayadev.jetpackcomposedisney.presentation.ui.theme.Black
 
 @Composable
 fun MainScreen(
@@ -38,6 +40,10 @@ fun MainScreen(
 
     LaunchedEffect(Unit) {
         viewModel.fetchCharacters()
+    }
+
+    LaunchedEffect(state) {
+        Log.d("MainScreen", "State updated: $state")
     }
 
     Scaffold(
@@ -134,7 +140,7 @@ fun TopAppBarWithSearch(navController: NavController) {
             IconButton(
                 onClick = { navController.navigate(DESTINATION_SEARCH) }
             ) {
-                Icon(Icons.Rounded.Search, contentDescription = null, tint = LightGray)
+                Icon(Icons.Rounded.Search, contentDescription = null, tint = Black)
             }
         }
     )

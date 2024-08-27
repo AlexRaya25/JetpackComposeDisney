@@ -22,11 +22,9 @@ class CharactersRepository @Inject constructor(
     override suspend fun getCharacters(): CharacterResponse {
         try {
             Log.d(TAG, "getCharacters: Fetching characters from API...")
-            val response = api.getCharacters() // Suponiendo que siempre se busca la primera página
-
-            // Ordenar los personajes por nombre y manejar listas nulas
-            val sortedCharacters = response.characters
-                .sortedBy { it.name }
+            val response = api.getCharacters()
+            Log.d(TAG, "getCharacters: Response received - $response")
+            val sortedCharacters = response.characters?.sortedBy { it.name } ?: emptyList()
 
             return response.copy(characters = sortedCharacters)
         } catch (e: Exception) {
@@ -40,8 +38,7 @@ class CharactersRepository @Inject constructor(
             Log.d(TAG, "getCharactersByName: Searching characters by name '$name'")
             val response = api.getCharactersByName(name)
 
-            val sortedCharacters = response.characters
-                .sortedBy { it.name }
+            val sortedCharacters = response.characters?.sortedBy { it.name }
 
             return response.copy(characters = sortedCharacters)
         } catch (e: Exception) {
